@@ -17,9 +17,10 @@ module CarrierWave
 
       def thumbnail opts = {}
         cache_stored_file! if !cached?
-
+        opts = model.send(:set_seek, opts)#send_thumbnailing_callback(opts[:callbacks][:before_thumbnail])
         @options = CarrierWave::Video::Thumbnailer::FFMpegThumbnailerOptions.new(opts)
-        @options = send_thumbnailing_callback(@options.callbacks[:before_thumbnail])
+        #seek = send_thumbnailing_callback(@options.callbacks[:before_thumbnail])
+        
         format = @options.format || 'jpg'
 
         tmp_path = File.join( File.dirname(current_path), "tmpfile.#{format}" )
