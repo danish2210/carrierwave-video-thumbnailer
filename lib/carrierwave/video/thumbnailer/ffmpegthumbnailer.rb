@@ -41,8 +41,9 @@ module CarrierWave
 
         def run options
           logger = options.logger
-          cmd = %Q{#{CarrierWave::Video::Thumbnailer::FFMpegThumbnailer.binary} -i "#{input_path.shellescape}" -o "#{output_path.shellescape}" #{options.to_cli}}.rstrip
-
+          #cmd = %Q{#{CarrierWave::Video::Thumbnailer::FFMpegThumbnailer.binary} -i "#{input_path.shellescape}" -o "#{output_path.shellescape}" #{options.to_cli}}.rstrip
+          cmd = "ffmpeg -i #{input_path.shellescape} -ss #{options[:seek]} -vframes 1 #{output_path.shellescape}"
+          
             logger.info("Running....#{cmd}") if logger
             outputs = []
             exit_code = nil
