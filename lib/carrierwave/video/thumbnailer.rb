@@ -19,6 +19,7 @@ module CarrierWave
         cache_stored_file! if !cached?
 
         @options = CarrierWave::Video::Thumbnailer::FFMpegThumbnailerOptions.new(opts)
+        @options = send_thumbnailing_callback(@options.callbacks[:before_thumbnail])
         format = @options.format || 'jpg'
 
         tmp_path = File.join( File.dirname(current_path), "tmpfile.#{format}" )
@@ -36,7 +37,7 @@ module CarrierWave
         callbacks = @options.callbacks
         logger = @options.logger
         begin
-          send_thumbnailing_callback(callbacks[:before_thumbnail])
+          #send_thumbnailing_callback(callbacks[:before_thumbnail])
           setup_thumbnailing_logger
           block.call
           send_thumbnailing_callback(callbacks[:after_thumbnail])
